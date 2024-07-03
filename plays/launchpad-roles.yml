@@ -1,0 +1,35 @@
+---
+# Install Default roles
+- name: Install Roles
+  hosts: all
+  user: ansible
+  vars_files:
+    - ../vars/globals.yml
+    - ../vars/virtualmachine.yml
+    - ../vars/bastionhost.yml
+    - ../vars/privaterunner.yml
+    - ../vars/aks.yml
+  vars:
+    roles_list:
+      - ../roles/virtualmachine
+      - ../roles/bastionhost
+      - ../roles/privaterunner
+      - ../roles/aks
+  tasks:
+    - name: Compile the order by which infra roles need to be activated/deployed
+      ansible.builtin.set_fact:
+        target_roles: "{{ roles_list }}"
+      when: state == "present"
+
+    - name: Compile the order by which infra role need to be deactivated/destroyed
+      ansible.builtin.set_fact:
+        target_roles: "{{ roles_list | reverse | list }}"
+      when: state == "absent"
+
+    - name: Apply all roles
+      ansible.builtin.include_role:
+        name: "{{ rolename }}"
+      loop: "{{ target_roles | list }}"
+      loop_control:
+        index_var: index
+        loop_var: rolename

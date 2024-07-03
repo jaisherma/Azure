@@ -1,0 +1,4 @@
+include:
+  - project: "dep/library/iac/iac-launchpads-scripts/common-gitlab-ci"
+    ref: "tags/v4.0.0"
+    file: "main.azure.yml"

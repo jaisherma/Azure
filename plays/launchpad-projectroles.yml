@@ -1,0 +1,29 @@
+---
+# Install Project roles
+- name: Install Project Roles
+  hosts: all
+  user: ansible
+  vars_files:
+    - ../vars/globals.yml
+    - ../vars/projectconfigexample.yml
+  vars:
+    roles_list:
+      - ../roles/projectconfigexample
+  tasks:
+    - name: Compile the order by which project roles need to be activated/deployed
+      ansible.builtin.set_fact:
+        target_roles: "{{ roles_list }}"
+      when: state == "present"
+
+    - name: Compile the order by which project role need to be deactivated/destroyed
+      ansible.builtin.set_fact:
+        target_roles: "{{ roles_list | reverse | list }}"
+      when: state == "absent"
+
+    - name: Apply all project roles
+      ansible.builtin.include_role:
+        name: "{{ rolename }}"
+      loop: "{{ target_roles | list }}"
+      loop_control:
+        index_var: index
+        loop_var: rolename

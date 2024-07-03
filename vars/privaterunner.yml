@@ -1,0 +1,42 @@
+
+---
+# Set paths for private runner role
+role_name       : "privaterunner"
+role_dir        : "{{ base_dir }}/roles/{{ role_name }}"
+
+######################################################
+# Variables for private runner role
+######################################################
+# One or more Private Runners can be configured.
+# -  For each runner, an unique key with associated property list can be defined under prlist 
+# -  A sample reference is displayed below 
+###################################################################################################################################################
+#prlist:
+#     - key                   : "pr01"                                 # mandatory; Key name should be uniquely defined for each runner ; should be of length 4; naming convention 'prXX' where 'XX' rep a unique number suffix like 01,02 ..99
+#       vm_size             : "Standard_D2s_v5"                      # optional;  Default is "Standard_D2s_v5" ; Possible values valid Azure VM Size.
+#       os_type             : "Linux"                                # mandatory; Possible values "Linux" 
+#       publisher           : "Canonical"                            # optional;  Default is "Canonical" if os_type="Linux"
+#       offer               : "0001-com-ubuntu-server-focal"         # optional;  Default is "0001-com-ubuntu-server-focal" if os_type="Linux"
+#       sku                 : "20_04-lts"                            # optional;  Default is "20_04-lts" if os_type="Linux"
+#       version             : "latest"                               # optional;  Default is "latest" if os_type="Linux"
+#       publiciptype        : "None"                                 # mandatory; Possible values "None"
+#       zone                : "1"                                    # optional,  "1" (default); availability Zone in which Private Runner should be located.
+#       storage_account_type: "Standard_LRS"                         # optional;  Default is "Standard_LRS" ; Possible values "Standard_LRS", "StandardSSD_LRS", "Premium_LRS", "StandardSSD_ZRS" or "Premium_ZRS"
+#       admin_username      : "depadmin"                             # optional;  Default is "depadmin" ; The admin_password/ssh_key is random generate; it can be retrieved from keyvault.
+#       registrationtoken   :                                        # mandatory;
+#            - "GR1348941zaJu3pjRvKLemdWGxKos"                       # mandatory; The runner registrationtoken from project
+#       taglist            :                                         # mandatory;
+#            - "changeme_with_a_custom_tag"                          # mandatory; Tag to add on runner
+#     - key                   : "pr02"      
+#       ...
+####################################################################################################################################################
+
+prlist:
+   - key                 : "pr01" 
+     os_type             : "Linux"
+     publiciptype        : "None"
+     registrationtoken   : 
+        - "changeme_with_a_registrationtoken"
+     taglist             :
+        - "changeme_with_a_custom_tag"
+         

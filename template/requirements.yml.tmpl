@@ -1,0 +1,50 @@
+#######################################################################################################################
+####################  MANDATORY ########### DO NOT REMOVE #############################################################
+#######################################################################################################################
+# download projectfoundation role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-roles/projectfoundation.git
+   scm: git
+   version: ${projectfoundation_version}
+   name: projectfoundation
+
+#######################################################################################################################
+####################  ADD ON ROLES ########### ########################################################################
+#######################################################################################################################
+
+#######################################################################################################################
+# Add the required roles definitions below
+#######################################################################################################################
+
+# download virtual machine role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-roles/virtualmachine.git
+   scm: git
+   version: ${virtualmachine_version}
+   name: virtualmachine
+
+# download azure bastion role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-roles/bastionhost.git
+   scm: git
+   version: ${bastionhost_version}
+   name: bastionhost
+
+# download private runner role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-roles/privaterunner.git
+   scm: git
+   version: ${privaterunner_version}
+   name: privaterunner
+
+# download AKS role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-roles/aks.git
+   scm: git
+   version: ${aks_version}
+   name: aks
+
+#######################################################################################################################
+# Add the required Custom Project roles definitions below
+#######################################################################################################################
+# download Custom Project role from gitlab (ptx or innersource)
+ - src: git+${CI_SERVER_URL}/dep/library/iac/iac-ansible-custom-roles/projectconfigexample.git
+   scm: git
+   version: ${projectconfigexample_version}
+   name: projectconfigexample
+   

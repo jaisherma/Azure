@@ -1,0 +1,10 @@
+
+---
+# Set paths for Bastion role
+role_name       : "bastionhost"
+role_dir        : "{{ base_dir }}/roles/{{ role_name }}"
+
+bastion:
+    sku         : "Basic"       # The SKU of the Bastion Host. Accepted values are Basic and Standard. Defaults to Basic 
+    scale_units : 2             # scale_units only can be changed when sku is Standard. scale_units is always 2 when sku is Basic
+                                # The number of scale units with which to provision the Bastion Host. Possible values are between 2 and 50.     

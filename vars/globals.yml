@@ -1,0 +1,49 @@
+# variables for project (to be defined by the project)
+#project         : tstpr                     # project name; 5 char value               # overidden by CI/CD variable values
+#env             : poc                       # project env.; 3 char value e.g dev, stg, e01, 001, 002 # overidden by CI/CD variable values
+#owner           : johndoe@soprasteria.com   # email id of person or team              # overidden by CI/CD variable values
+
+# Launchpad variables
+launchpad:
+    project         : "{{ lookup('env','PROJECT_PREFIX') | lower }}"
+    env             : "{{ lookup('env','PROJECT_ENV') | lower }}"
+    lastupdatedby   : "{{ lookup('env','GITLAB_USER_LOGIN') | lower }}"
+    location        : "{{ lookup('env','LOCATION') }}"
+    tf_address      : "{{ lookup('env','TF_ADDRESS') }}"
+    ci_server_ver   : "{{ lookup('env','CI_SERVER_VERSION') }}"
+    runners_token   : "{{ lookup('env','DEF_RUNNER_TOKEN') }}"
+    cloud           : azure
+    
+    # Add a line for each roles with type of action required 
+    # Possible values :
+    #    - "deploy"   : Deploy the role               (installs resources as per the role)
+    #    - "destroy"  : destroy / undo the role       (uninstall the role )
+    #    - "skip"     : skip the role                 (skips the role; can be used to skip a role ; or maintain a state with no modification via launchpad )
+    # 
+
+    roles   :
+        # Top-up/Add-on modules;
+
+         # Role to manage bastion - A managed service that helps secure remote access to your virtual machines 
+        bastionhost         : "skip"
+
+        # Role to manage VMs : possible values "deploy", "destroy" or skip    
+        virtualmachine      : "skip"
+
+        # Role to manage VMs : possible values "deploy", "destroy" or skip    
+        privaterunner       : "skip"
+
+        # Role to manage Azure Kubernates clusters : possible values "deploy", "destroy" or skip    
+        aks                        : "skip"
+        
+        #  Upcomming roles/components for 2024 Q1
+        #appservices         : skip         # to Deploy App Service
+        #posgresql           : skip         # to Deploy Azure Database for PostgreSQL (PAAS)
+        #mysql               : skip         # to Deploy Azure Database for MySQL (PAAS)
+        #oraclexe            : skip         # to Deploy OXE on a dedicated VM
+
+    projectroles :
+        projectconfigexample                : "skip"
+
+        #customconfig1                      : "skip"
+        #customconfig2                      : "skip"

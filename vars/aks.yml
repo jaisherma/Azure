@@ -1,0 +1,122 @@
+---
+# Set paths for azure kubernates role
+role_name       : "aks"
+role_dir        : "{{ base_dir }}/roles/{{ role_name }}"
+
+######################################################
+# Variables for aks role
+######################################################
+# One or more AKS can be configured. (Max is 5 Clusters)
+# -  For each aks, an unique aks key with associated property list can be defined under akslist 
+# -  A sample reference is displayed below 
+###################################################################################################################################################
+#akslist:
+# akslist:      # mandatory; Key name should be uniquely defined for each aks ; should be of length 5; naming convention 'aksXX' where 'XX' rep a unique number suffix like 01,02 upto 05
+#      - key                              : "aks01"
+#        upgrade_mode                     : "Auto"          # mandatory 
+#                                                                # possible values : Auto, Manual
+#        # Version of Kubernetes specified when creating the AKS managed cluster (format Major.minor)
+#        kubernetes_version              : 1.27             # mandatory if upgrademode is set to "Manual" 
+#                                                           # should not be set if upgrademode is set to "Auto"            
+#                                                           # possible values : 1.27, 1.28
+#        # Integrate with Log Analytics Workspace (where the audit logs collected by Microsoft Defender should be sent to)
+#        enable_log_analytics            : true                  # Optional 
+#                                                                # possible values : true/false (default false)
+#        # The SKU Tier that should be used for this Kubernetes Cluster.
+#        sku_tier                        : "Free"            # Optional
+#                                                                # possible values : Free, Paid (default Free)
+#        # Restrict access to the Kubernetes Service Management API by granting API access only to IP addresses in specific ranges
+#        apiserver:                                          # Optional block
+#            enable_ssg_whitelist_ip_ranges     : true       # Mandatory if apiserver block is specified 
+#                                                            # possible values: true/false (default false)
+#            # Addtional list of authorized apiserver IP ranges
+#            addon_whitelist_ip_ranges         :             # Optional 
+#                - "122.161.67.49/32"
+#                                                            # Additional Public IP Address Range list, e.g: "XX.YY.ZZ.AA/32","GG.HH.JJ.JJ/32"
+#                #- "122.161.67.49/32"
+#                #- "51.142.190.80/32" 
+#            # Private Gitlab runner block for cluster; # To Deploy applications via CI/CD when apiserver is declared.
+#            # Registration tokens for all repos should be defined here.
+#            gitlabrunner:                                   # Mandatory if apiserver block is declared
+#                registrationtoken   :                       # Mandatory when the Gitlab-runner block is defined
+#                    - "GR1348941Dzz6c4VisrmTHsNrGxab"
+#                taglist             :                       # Mandatory when the Gitlab-runner block is defined
+#                    - "aks"
+#                    - "dep_iac"
+#        # User account to create on node VMs for SSH access 
+#        admin_username                  : "depaksadmin"     # Optional 
+#                                                               # possible values : custom user account (default depaksadmin)
+#        autoshutdown:
+#            enable              : true       # Mandatory if autoshutdown block is specified 
+#                                             # possible values: true/false (default false)
+#            schedule            : "19:00->06:00,Saturday,Sunday"
+#        # Project Node pool customization
+#        projectnodepool                 :                   # Optional block
+#                                                                # If declared, atleast one of the below properties should be manadatory
+#            vm_size                     : "Standard_DS2_V2" # Mandatory when systemnodepool block is defined; 
+#                                                                # possible values (default Small Standard_DS2_V5)
+#            # Minumum nodes count used for autoscaler
+#            node_pool_min_count         : 1                 # Optional
+#                                                                # possible value in the range of [1, 1000] (default is 1)
+#            # Maximum nodes count used for autoscaler
+#            node_pool_max_count         : 5                 # Optional
+#                                                                # possible values in the range of [1, 1000] (default is 5)      
+#       # Green Policy to automatically shuts down (some of) your resources when you don't need them
+#        green_policy:            # Optional block, if not defined, the green policy is applied (default true)
+#            enable                  : true                  # Mandatory if green_policy block is declared
+#                                                            # possible values: true/false
+#                                                            # if set to false, Green Policy will be disabled
+#                                                            # if set to true, 
+#                                                            #     Green Policy will be enabled. 
+#                                                            #     All project namespaces will be onboarded
+#            weekdays: "1-5"     # Weekdays are in cron notation.
+#                                #   For example, to configure a schedule from monday to friday, set it to “1-5”
+#            sleepAt: "20:00"    # Hours:Minutes
+#                                #   Accept cron schedule for both hour and minute. 
+#                                #   For example, :/2 is set to configure a run every even minute.
+#            wakeUpAt: "08:00"   # Hours:Minutes
+#                                #   Accept cron schedule for both hour and minute. 
+#                                #   For example, :/2 is set to configure a run every even minute. 
+#                                #   It is not required.
+#            timeZone: "Europe/Paris"    # (Optional)
+#                                        #   Time zone to set the schedule, in IANA time zone identifier. 
+#                                        #   It is not required, default to UTC. 
+#                                        #   For example, for the Italy time zone set Europe/Rome
+#        # Enable additional security enablers
+#        securityenablers:                                   # Optional block
+#                                                            # If declared, atleast one child block is manadatory
+#            # Restrict access to the Ingress by granting access to IP addresses in specific ranges
+#            oauth:                                          # Optional block
+#                enable                  : false                  # Mandatory if oauth block is declared
+#                                                                 # possible values: true/false (default disabled)
+#                                                                 # if set to false, Ingress Whitelisting will be enabled with SSG IPs
+#                                                                 # if set to true, Ingress Whitelisting is disabled (by default)
+#            ingress:                                        # Optional block
+#                enable_ssg_whitelist_ip_ranges  : true           # Mandatory when ingress block is defined 
+#                                                                 # possible values: true/false (default disabled)
+#                                                                 # if oauth is not enabled, enable_ssg_whitelist_ip_ranges is applied by default
+#                #Addtional Ip rages to whitelist                                             
+#                addon_whitelist_ip_ranges       :           # Optional; when declared should have atleast one ip range
+#                    - "122.161.73.67/32"
+#                    - "115.117.111.92/32"
+#                    - "20.73.166.0/32"
+#            neuvector:                                      # Optional block
+#                enable                  : true                   # Mandatory if neuvector block is declared
+#            falco:                                               # possible values: true/false (default disabled)
+#                enable                  : true              # Optional block   
+#                                                                 # Mandatory if neuvector block is declared
+#                                                                 # possible values: true/false (default disabled)
+#        aksbackup:                                          # Optional block 
+#                                                            # If declared, then kasten block is manadatory
+#            kasten:                                         # Optional block
+#                enable                   : true                  # Mandatory if kasten block is declared         
+#      - key                              : "aks02"
+#        upgrade_mode                     : "Manual"         # mandatory
+#        # Version of Kubernetes specified when creating the AKS managed cluster
+#        kubernetes_version              : 1.27              # mandatory if upgrademode is set to "Manual" 
+####################################################################################################################################################
+akslist:
+   - key                             : "aks01"
+     upgrade_mode                    : "Auto"            # mandatory
+
+

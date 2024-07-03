@@ -1,0 +1,20 @@
+---
+# Set paths for aras role
+   role_name       : "projectconfigexample"
+   role_dir        : "{{ base_dir }}/roles/{{ role_name }}"
+################################################################################################################################################
+# project can integrate their custom role to apply additional configuration on top of the VMs created by infra roles (Virtual machine roles).
+# For illustration purpose project custom role is named as projectconfigexample. projectconfigexample can be renamed as based on the role type.
+##################################################################################################################################################
+#
+###################################################################################################################################################
+# To enable this role, project need to define few things:
+# 1)  The role should be enabled in vars/globals.yml file. Set projectconfigexample to "deploy" in global.yml under projectroles.
+# 2)  Role definition should be present in template/requirements.yml.tmpl file. In  requirements.yml.tmpl add Custom Project roles definitions ( As a reference we have created project custom role i.e. projectconfigexample at dep/library/iac/iac-ansible-custom-roles/projectconfigexample.git and added the same in requirements.yml.tmpl file)
+# 3)  In requirements_versions.yml file define the projectconfigexample tag version or branch ( As a reference we have tagged projectconfigexample with v2.0.0)
+
+# Refer https://innersource.soprasteria.com/dep/library/iac/iac-ansible-custom-roles/projectconfigexample role to understand how project can configure their custom role.
+#######################################################################################################################################################
+
+
+
